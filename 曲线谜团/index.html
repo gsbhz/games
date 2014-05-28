@@ -1,0 +1,1021 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=GBK">
+    <title>曲线谜团-Html5中文网</title>
+    <meta name="keywords" http-equiv="keywords" content="What a tangled web we weave.">
+    <meta name="description" content="Get more tangled than your friends to win the game of Entanglement.">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <style type="text/css">
+     body {
+	   background: #fff8bc url('i/bg.png');
+	   font-family: arial, sans serif;
+	   margin: 0;
+	   padding: 0;
+	   overflow: hidden;
+	 }
+     
+	 .local-multiplayer {
+	   background: url('i/bg-local.png');
+	 }
+     
+     h1 {font-size: 1.2em; color: #222; position: absolute; z-index: 100; top: 0px; left: 0px; right: 0px; height: 55px; background: url('i/entanglement-logo.png') 25px 5px no-repeat;}
+     h1 span {display: none;}
+     img {border: none;}
+     form {position: absolute; top: 240px; left: 150px;}
+
+     #tag-line {display: none;}
+     #branding {position: absolute; right: 10px; top: 55px;}
+     #menu {position: absolute; top: 75px; left: 2px; display: none; z-index: 98; background: url('i/menu.png') no-repeat; padding: 188px 0 0 170px;}
+     #ban-button {position: absolute; top: 238px; right: 5px; font-size: 0.6em;}
+     #game {
+       position: absolute;
+       left: 0;
+       top: 0;
+       width: 100%;
+       height: 100%;
+       margin: 0;
+     }
+
+	 #preview {position: absolute; width: 20px; height: 20px; cursor: pointer;}
+     #queue {position: absolute; width: 200px; height: 200px; cursor: pointer; bottom: 63px; left: 10px;}
+     #msg {text-align: center; font-size: 0.9em; font-weight: bold; position: absolute; bottom: 205px; left: 15px; width: 180px; z-index: 99;}
+     #scores {text-align: left; font-size: 0.9em; font-weight: bold; position: absolute; top: 60px; left: 15px; z-index: 98;}
+     #form-stop {text-align: left; font-size: 0.9em; font-weight: bold;}
+     #bar {width: 100%; position: absolute; bottom: 0px; height: 15px;}
+     .progress {background: yellow;}
+     #begin {font-size: 1.2em; line-height: 1.6em; padding: 5px 15px; width: 200px; text-align: center; margin: 0.4em; background: #fff; cursor: pointer; display: block; font-weight: bold;}
+     #instructions {text-align: justify; position: absolute; top: 75px; bottom: 175px; left: 3em; right: 3em; padding: 0 2em; line-height: 1.6em; font-size: 0.9em; background: transparent url('instructions-bg.png') bottom center no-repeat;}
+     #guesses {font-size: 0.8em; color: #888; margin: 1em;}
+
+     a.corner-link {background: url('http://gopherwoodstudios.com/i/flip.png') 5px 0px no-repeat; width: 34px; height: 30px; z-index: 1000; position: absolute; display: block; top: 0px; right: 0px;}
+     a.corner-link:hover {background: url('http://gopherwoodstudios.com/i/flip.png') bottom left no-repeat; width: 100px; height: 100px; position: absolute; display: block; top: 0px; right: 0px;}
+     a.corner-link span {display: none;}
+
+
+	  
+	  a {text-decoration: none;}
+
+      /* Message Box Properties */
+      h2 {font-size: 1em; margin: 0; padding: 0; line-height: 1.8em; background: #eee; background: -webkit-gradient(linear, left bottom, left top, color-stop(0.64, #fff), color-stop(0.27, #eee)); background: -moz-linear-gradient(center bottom, #fff 64%, #eee 27%);}
+      #message-box {display: none; z-index: 1008; position: absolute; top: 50%; left: 50%; border: 3px solid #fff; border-radius: 5px; text-align: center; background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAABl0RVh0U29mdHdhcmUAUGFpbnQuTkVUIHYzLjUuNUmK/OAAAAANSURBVBhXY/j///9dAAnZA9um4/aEAAAAAElFTkSuQmCC);}
+      #message-box p {line-height: 1.5em; font-size: 0.9em; margin: 1em; text-align: justify;}
+      .return:link, .return:visited {font-size: 0.8em; position: absolute; top: 2px; right: 2px; line-height: 1.8em; height: 1.8em; width: 1.8em; text-align: center; border: 1px solid #ddd; border-radius: 4px; color: #aaa; font-weight: bold; background: #f8f8f8; background: -webkit-gradient(linear, left bottom, left top, color-stop(0.64, #fff), color-stop(0.27, #eee)); background: -moz-linear-gradient(center bottom, #fff 64%, #eee 27%);}
+      .return:active, .return:hover {font-size: 0.8em; position: absolute; top: 2px; right: 2px; line-height: 1.8em; height: 1.8em; width: 1.8em; text-align: center; border: 1px solid #aaa; border-radius: 4px; color: #aaa; font-weight: bold; background: #eee; background: -webkit-gradient(linear, left bottom, left top, color-stop(0.27, #fff), color-stop(0.64, #eee)); background: -moz-linear-gradient(center bottom, #fff 27%, #eee 64%);}
+      .button:link, .button:visited {margin: 0 3em; padding: 0 1em; display: block; line-height: 2em; height: 2em; text-align: center; border: 1px solid #ddd; border-radius: 4px; color: #aaa; font-weight: bold; background: #f8f8f8; background: -webkit-gradient(linear, left bottom, left top, color-stop(0.64, #fff), color-stop(0.27, #eee)); background: -moz-linear-gradient(center bottom, #fff 64%, #eee 27%);}
+      .button:active, .button:hover {margin: 0 3em; padding: 0 1em;  display: block; line-height: 2em; height: 2em; text-align: center; border: 1px solid #aaa; border-radius: 4px; color: #aaa; font-weight: bold; background: #eee; background: -webkit-gradient(linear, left bottom, left top, color-stop(0.27, #fff), color-stop(0.64, #eee)); background: -moz-linear-gradient(center bottom, #fff 27%, #eee 64%);}
+      #message-box .button {position: absolute; bottom: 15px; left: 50%; margin: 0 0 0 -100px; width: 200px; padding: 0;}
+      #browsers {margin: 5px 60px; padding: 0; width: 288px; height: 72px;}
+      #browsers li {float: left; margin: 0; padding: 0; list-style: none;}
+      #browsers a {height: 72px; width: 72px; display: block;}
+      #browsers span {display: none;}
+      .opera {background: url('i/browsers.png') -216px 0px no-repeat;}
+      .firefox {background: url('i/browsers.png') -144px 0px no-repeat;}
+      .chrome {background: url('i/browsers.png') -72px 0px no-repeat;}
+      .safari {background: url('i/browsers.png') 0px 0px no-repeat;}
+    </style>
+    <script type="text/javascript" src="./js/map.js"></script>
+    <script type="text/javascript" src="./js/player.js"></script>
+    <script type="text/javascript" src="./js/cookies.js"></script>
+    <script type="text/javascript">
+
+ var INSTRUCTIONS = '<a class="return" href="javascript:clearMessage();">X</a>' +
+        '<h2>玩法：</h2>' +
+        '<p>尽量连接更多的路线。你连接的线段越多，分数越高。用方向箭或是鼠标滚轮转动你的六角形，用鼠标点击或是按空格箭可以查看你的线路。尽量避免碰到墙壁，一旦碰上，游戏结束。</p>'+
+            '<a class="button" href="javascript:clearMessage();">' +
+     '开始游戏!</a>';
+
+var WIDTH = +780;
+var HEIGHT = +450;
+var SCALE = +1;
+var OFFSET_X = +100;
+var OFFSET_Y = +173;
+var GRID_X = OFFSET_X * 3;
+var GRID_Y = OFFSET_Y * 2;
+
+var numberOfTeams = 1;
+var currentTeam = 0;
+var teams;
+
+
+
+////////////////////////////
+/////// INPUT //////////////
+
+
+
+
+
+document.onkeydown = function(e)
+{
+  var evt = e || window.event;
+
+  switch (evt.keyCode)
+  {
+    case 18: //alt
+    case 90: // z del
+    case 46: swapTiles(); break;
+    case 13: //enter
+    case 32: placeTile(); return false; //spacebar - return false to prevent propagation to link in Opera
+    case 37: holdingTile.rotate(-1); return false; //West
+    case 38: holdingTile.rotate(-1); return false; //North
+    case 39: holdingTile.rotate(+1); return false; //East
+    case 40: holdingTile.rotate(+1); return false; //South
+  }
+}
+document.onkeyup = function(e)
+{
+  var evt = e || window.event;
+}
+
+//to slow it down, store delta value over time:
+var delta = 0;
+
+function wheel(event){
+//        var delta = 0;
+        if (!event) event = window.event;
+        if (event.wheelDelta) {
+                if (window.opera)
+                {
+                  delta += (event.wheelDelta/120 * 2); //opera seems to scroll slower, so keeping the higher increment should make it behave a bit better
+                } else {
+                  delta += event.wheelDelta/120; 
+                }
+        } else if (event.detail) {
+                //delta += -event.detail/3;
+                delta -= event.detail; //firefox seems to scroll slower, so keeping the higher increment should make it behave a bit better
+        }
+        if (Math.abs(delta) > 1)
+        {
+          delta = delta / Math.abs(delta);
+          holdingTile.rotate(delta);
+          delta = 0;
+        }
+}
+
+if (window.addEventListener) window.addEventListener('DOMMouseScroll', wheel, false);
+window.onmousewheel = document.onmousewheel = wheel;
+ 
+
+
+
+
+
+var mouseIsDown = false;
+var mouseClicked = false;
+var oMouseX = 0;
+var oMouseY = 0;
+var startAngle;
+var touchable = false;
+
+function addRotateInput(e)
+{
+  e.onmousedown = function(e)
+  {
+      mouseIsDown = true;
+      mouseClicked = e.which;
+      if (!mouseClicked) mouseClicked = e.button;
+
+      var mouseX = parseInt(e.currentTarget.offsetWidth / 2);
+      var mouseY = parseInt(e.currentTarget.offsetHeight / 2);
+      if(e.offsetX) {
+        mouseX = e.offsetX - mouseX;
+        mouseY = e.offsetY - mouseY;
+      }
+      else
+      {
+        if(e.layerX) {
+          mouseX = e.layerX - mouseX;
+          mouseY = e.layerY - mouseY;
+        }
+        else
+        {
+          mouseX = e.clientX - mouseX;
+          mouseY = e.clientY - mouseY;
+        }
+      }
+
+      oMouseX = mouseX;
+      oMouseY = mouseY;
+
+  }
+  e.onmouseup   = function(e)
+  {
+      mouseIsDown = false;
+      if(mouseClicked == 1)
+      {
+        placeTile();
+        mouseClicked = false;
+      }
+      if(mouseClicked == 3)
+      {
+        swapTiles();
+        mouseClicked = false;
+      }
+  }
+  e.onmouseout  = function(e) {mouseIsDown = false;}
+
+  e.onmousemove = function(e)
+  {
+    if(mouseIsDown)
+    {
+
+      var mouseX = parseInt(e.currentTarget.offsetWidth / 2);
+      var mouseY = parseInt(e.currentTarget.offsetHeight / 2);
+      if(e.offsetX) {
+        mouseX = e.offsetX - mouseX;
+        mouseY = e.offsetY - mouseY;
+      }
+      else
+      {
+        if(e.layerX) {
+          mouseX = e.layerX - mouseX;
+          mouseY = e.layerY - mouseY;
+        }
+        else
+        {
+          mouseX = e.clientX - mouseX;
+          mouseY = e.clientY - mouseY;
+        }
+      }
+
+      if((oMouseX != mouseX) || (oMouseY != mouseY)) mouseClicked = false;
+
+      var hyp = Math.sqrt(mouseX*mouseX + mouseY*mouseY);
+      if (hyp != 0)
+      {
+        var angle = Math.acos(mouseX/hyp);
+        if (mouseY < 0) angle = (Math.PI * 2) - angle;
+        if (mouseClicked) startAngle = angle;
+        var rotation = (angle + (Math.PI * 2) - startAngle) % (Math.PI * 2);
+        if(rotation > ((Math.PI * 5) / 3))
+        {
+          holdingTile.rotate(-1);
+          startAngle = (startAngle + ((Math.PI * 5) / 3)) % (Math.PI * 2);
+        } else {
+          if(rotation > (Math.PI / 3))
+          {
+            holdingTile.rotate(+1);
+            startAngle = (startAngle + (Math.PI / 3)) % (Math.PI * 2);
+          }
+        }
+      }
+
+
+    }
+  }
+
+  e.oncontextmenu = function (e)
+  {
+    return false;
+  }
+
+  // For iPhone, iPad, Android support:
+
+  this.touch = function (e)
+  {
+    var touches = e.changedTouches;
+    var first = touches[0];
+    var type = '';
+
+    beenTouched = true;
+    
+    switch(e.type)
+    {
+        case 'touchstart':
+          type = 'mousedown';
+          break;
+        case 'touchmove':
+          type='mousemove';
+          e.preventDefault();
+          break;        
+        case 'touchend':
+          type='mouseup';
+          break;
+    }
+        
+    var newE = document.createEvent('MouseEvent');
+    newE.initMouseEvent(type, true, true, window, 1, first.screenX, first.screenY, first.clientX, first.clientY, false, false, false, false, 0, null);
+    first.target.dispatchEvent(newE);
+  }
+
+  e.ontouchstart = function (e)
+  {
+    mouseClicked = 1;
+
+    if(e.onmousedown)
+    {
+      touchable = true;
+      e.onmousedown = null;
+      e.onmouseup   = null;
+      e.onmouseout  = null;
+      e.onmousemove = null;
+      e.onclick     = null;
+    }
+  }    
+
+  e.ontouchmove = function (e)
+  {
+    var touches = e.changedTouches;
+    var first = touches[0];
+
+    var mouseX = parseInt(first.target.offsetWidth / 2);
+    var mouseY = parseInt(first.target.offsetHeight / 2);
+
+    mouseX = first.clientX - mouseX - first.target.offsetLeft;
+    mouseY = first.clientY - mouseY - first.target.offsetTop;
+
+      var hyp = Math.sqrt(mouseX*mouseX + mouseY*mouseY);
+      if (hyp != 0)
+      {
+        var angle = Math.acos(mouseX/hyp);
+        if (mouseY < 0) angle = (Math.PI * 2) - angle;
+        if (mouseClicked) startAngle = angle;
+        var rotation = (angle + (Math.PI * 2) - startAngle) % (Math.PI * 2);
+        if(rotation > ((Math.PI * 5) / 3))
+        {
+          holdingTile.rotate(-1);
+          startAngle = (startAngle + ((Math.PI * 5) / 3)) % (Math.PI * 2);
+        } else {
+          if(rotation > (Math.PI / 3))
+          {
+            holdingTile.rotate(+1);
+            startAngle = (startAngle + (Math.PI / 3)) % (Math.PI * 2);
+          }
+        }
+      }
+      mouseClicked = false;
+
+    e.preventDefault();
+  }
+
+  e.ontouchend = function (e)
+  {
+    var touches = e.changedTouches;
+    var first = touches[0];
+      if(mouseClicked == 1)
+      {
+        placeTile();
+        mouseClicked = false;
+      }
+  }
+
+//  document.addEventListener('touchcancel', this.touch, true);    
+
+}
+
+
+
+
+
+
+
+
+///////////////////////// - end INPUT
+
+
+function adjacentPath(path)
+{
+  var oddNumber = path % 2;
+  if (oddNumber)
+  {
+    return (path + 5) % 12;
+  } else {
+    return (path + 7) % 12;
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//  CLASSES
+
+function aTile(x, y, team, pairs, parent)
+{
+  this.x = x;
+  this.y = y;
+  this.description = x + ',' + y;
+  this.team = team;
+  this.parent = parent;
+
+  this.colors = ["gray","gray","gray","gray","gray","gray","gray","gray","gray","gray","gray","gray"];
+
+  this.generate = function ()
+  {
+    // Firefox is not very good at random sorting, so use the tile's last configuration if available to make more variations:
+    try
+	{
+  	  this.pairs.sort(function (a, b){return Math.random() - 0.5;});
+	} catch (e) {
+	  this.pairs = [0,1,2,3,4,5,6,7,8,9,10,11];
+      this.pairs.sort(function (a, b){return Math.random() - 0.5;});
+	}
+  }
+  if (pairs == 'generate')
+  {
+    this.generate();
+  } else {
+    this.pairs = pairs;
+  }
+
+  this.connect = function (side, tile)
+  {
+    switch (side)
+    {
+      case 'A':
+        this.sideA = tile;
+        tile.sideD = this;
+        break;
+      case 'B':
+        this.sideB = tile;
+        tile.sideE = this;
+        break;
+      case 'C':
+        this.sideC = tile;
+        tile.sideF = this;
+        break;
+      case 'D':
+        this.sideD = tile;
+        tile.sideA = this;
+        break;
+      case 'E':
+        this.sideE = tile;
+        tile.sideB = this;
+        break;
+      case 'F':
+        this.sideF = tile;
+        tile.sideC = this;
+        break;
+    }
+  }
+
+  this.paint = function ()
+  {
+    var index;
+    var tile;
+    for (index in this.colors)
+    {
+      if(this.colors[index] == 'gray') if (this.getPartnerColor(+index) != 'gray') this.colors[index] = this.getPartnerColor(+index);
+    }
+    for (index in this.colors)
+    {
+      if(this.colors[index] != 'gray') this.paintTrack(index, this.colors[index]);
+    }
+  }
+
+  this.paintTrack = function(entrance, color)
+  {
+    var index = 0;
+    for (index in this.pairs)
+    {
+      if (this.pairs[index] == entrance)
+      {
+        if (index % 2)
+        {
+          this.colors[this.pairs[index]] = color;
+//            scores[this.team
+          if(this.colors[this.pairs[+index - 1]] == 'gray')
+          {
+            this.colors[this.pairs[+index - 1]] = color;
+            if (this.getPartner(this.pairs[+index - 1])) this.getPartner(this.pairs[+index - 1]).paintTrack(adjacentPath(this.pairs[+index - 1]), color);
+          }
+        } else {
+          this.colors[this.pairs[index]] = color;
+          if(this.colors[this.pairs[+index + 1]] == 'gray')
+          {
+            this.colors[this.pairs[+index + 1]] = color;
+            if (this.getPartner(this.pairs[+index + 1])) this.getPartner(this.pairs[+index + 1]).paintTrack(adjacentPath(this.pairs[+index + 1]), color);
+          }
+        }
+        this.render();
+        break;
+      }
+    }
+  }
+
+  this.appendTo = function(exit)
+  {
+    var index = 0;
+    var partner = this.getPartner(exit);
+    if (partner)
+    {
+      if ((partner.pairs == 'start') || (partner.pairs == 'wall'))
+      {
+        return partner;
+      } else {
+        for (index in partner.pairs)
+        {
+          if (partner.pairs[+index] == adjacentPath(+exit))
+          {
+            if ((+index) % 2)
+            {
+              return partner.appendTo(partner.pairs[+index - 1]);
+            } else {
+              return partner.appendTo(partner.pairs[+index + 1]);
+            }
+            break;
+          }
+        }
+      }
+    } else {
+      var x = 0;
+      var y = 0;
+      switch(exit)
+      {
+        case 0:
+        case 1:
+          x = this.x;
+          y = this.y - GRID_Y;
+          break;
+        case 2:
+        case 3:
+          x = this.x + GRID_X;
+          y = this.y - OFFSET_Y;
+          break;
+        case 4:
+        case 5:
+          x = this.x + GRID_X;
+          y = this.y + OFFSET_Y;
+          break;
+        case 6:
+        case 7:
+          x = this.x;
+          y = this.y + GRID_Y;
+          break;
+        case 8:
+        case 9:
+          x = this.x - GRID_X;
+          y = this.y + OFFSET_Y;
+          break;
+        case 10:
+        case 11:
+          x = this.x - GRID_X;
+          y = this.y - OFFSET_Y;
+          break;
+      }
+      var newTile = this.parent.add(new aTile(x, y, 0, 0, this.parent));
+      var A = newTile.x + ',' + (newTile.y - GRID_Y);
+      var B = (newTile.x + GRID_X) + ',' + (newTile.y - OFFSET_Y);
+      var C = (newTile.x + GRID_X) + ',' + (newTile.y + OFFSET_Y);
+      var D = newTile.x + ',' + (newTile.y + GRID_Y);
+      var E = (newTile.x - GRID_X) + ',' + (newTile.y + OFFSET_Y);
+      var F = (newTile.x - GRID_X) + ',' + (newTile.y - OFFSET_Y);
+
+      // Find tiles already on board
+      var index;
+      var map = this.parent.map;
+      for (index in map)
+      {
+        switch (map[index].description)
+        {
+          case A:
+            newTile.connect('A', map[index]);
+            break;
+          case B:
+            newTile.connect('B', map[index]);
+            break;
+          case C:
+            newTile.connect('C', map[index]);
+            break;
+          case D:
+            newTile.connect('D', map[index]);
+            break;
+          case E:
+            newTile.connect('E', map[index]);
+            break;
+          case F:
+            newTile.connect('F', map[index]);
+            break;
+        }
+      }
+      return newTile;
+    }
+  }
+
+  this.calculateScore = function(exit, tally)
+  {
+    var index = 0;
+    var partner = this.getPartner(exit);
+    if (partner)
+    {
+      if ((partner.pairs == 'start') || (partner.pairs == 'wall'))
+      {
+        return tally;
+      } else {
+        for (index in partner.pairs)
+        {
+          if (partner.pairs[+index] == adjacentPath(+exit))
+          {
+            var partnerExit;
+            if ((+index) % 2)
+            {
+              partnerExit = partner.pairs[+index - 1];
+            } else {
+              partnerExit = partner.pairs[+index + 1];
+            }
+            if (this.colors[exit] != partner.colors[partnerExit])
+            {
+              return tally;
+            } else {
+              return partner.calculateScore(partnerExit, tally + 1); // bonus formula: tally + (0.5 * (1 + partner.pairsMatching(this.colors[exit]))));
+            }
+            break;
+          }
+        }
+      }
+    } else {
+      return tally;
+    }
+  }
+
+  this.pairsMatching = function(color)
+  {
+    var numberOfExitsMatchingColor = 0;
+    for (var index in this.colors)
+    {
+      if (color == this.colors[index]) numberOfExitsMatchingColor++;
+    }
+    var pairs = Math.floor(numberOfExitsMatchingColor / 2);
+    return pairs;
+  }
+
+
+  this.getPartnerColor = function(path)
+  {
+
+    if (this.getPartner(path))
+    {
+      return this.getPartner(path).colors[adjacentPath(path)];
+    } else {
+      return 'gray';
+    }
+  }
+
+  this.getPartner = function(path)
+  {
+    switch(path)
+    {
+      case 0:
+      case 1:
+        if(this.sideA) return this.sideA;
+        break;
+      case 2:
+      case 3:
+        if(this.sideB) return this.sideB;
+        break;
+      case 4:
+      case 5:
+        if(this.sideC) return this.sideC;
+        break;
+      case 6:
+      case 7:
+        if(this.sideD) return this.sideD;
+        break;
+      case 8:
+      case 9:
+        if(this.sideE) return this.sideE;
+        break;
+      case 10:
+      case 11:
+        if(this.sideF) return this.sideF;
+        break;   
+    }
+    return false;
+  }
+
+  this.update = function ()
+  {
+  }
+
+  this.render = function (scale)
+  {
+    if (!scale) scale = this.parent.scale;
+
+    if (this.pairs == 'start')
+    {
+      this.parent.drawHexagon(this.x, this.y, scale, 'gray');
+      this.parent.drawPath(this.x, this.y, scale, 0, -1, this.colors[0], false, 'gray');
+      this.parent.drawPath(this.x, this.y, scale, 1, -1, this.colors[1], false, 'gray');
+      this.parent.drawPath(this.x, this.y, scale, 2, -1, this.colors[2], false, 'gray');
+      this.parent.drawPath(this.x, this.y, scale, 3, -1, this.colors[3], false, 'gray');
+      this.parent.drawPath(this.x, this.y, scale, 4, -1, this.colors[4], false, 'gray');
+      this.parent.drawPath(this.x, this.y, scale, 5, -1, this.colors[5], false, 'gray');
+      this.parent.drawPath(this.x, this.y, scale, 6, -1, this.colors[6], false, 'gray');
+      this.parent.drawPath(this.x, this.y, scale, 7, -1, this.colors[7], false, 'gray');
+      this.parent.drawPath(this.x, this.y, scale, 8, -1, this.colors[8], false, 'gray');
+      this.parent.drawPath(this.x, this.y, scale, 9, -1, this.colors[9], false, 'gray');
+      this.parent.drawPath(this.x, this.y, scale, 10, -1, this.colors[10], false, 'gray');
+      this.parent.drawPath(this.x, this.y, scale, 11, -1, this.colors[11], false, 'gray');
+      this.parent.drawHexagon(this.x, this.y, 0.7 * scale, '#fff');
+      //this.parent.context.fillStyle    = '#333';
+      //this.parent.context.fillText  ('Start', this.x * SCALE, this.y * SCALE);
+    } else {
+      if (this.pairs == 'wall')
+      {
+        this.parent.drawHexagon(this.x, this.y, scale, '#ddd');
+      } else {
+        if (this.pairs != 0)
+        {
+          this.parent.drawHexagon(this.x, this.y, scale, '#fffff4');
+          this.parent.drawPath(this.x, this.y, scale, this.pairs[0], this.pairs[1], this.colors[this.pairs[0]], this.colors[this.pairs[1]], '#fffff4');
+          this.parent.drawPath(this.x, this.y, scale, this.pairs[2], this.pairs[3], this.colors[this.pairs[2]], this.colors[this.pairs[3]], '#fffff4');
+          this.parent.drawPath(this.x, this.y, scale, this.pairs[4], this.pairs[5], this.colors[this.pairs[4]], this.colors[this.pairs[5]], '#fffff4');
+          this.parent.drawPath(this.x, this.y, scale, this.pairs[6], this.pairs[7], this.colors[this.pairs[6]], this.colors[this.pairs[7]], '#fffff4');
+          this.parent.drawPath(this.x, this.y, scale, this.pairs[8], this.pairs[9], this.colors[this.pairs[8]], this.colors[this.pairs[9]], '#fffff4');
+          this.parent.drawPath(this.x, this.y, scale, this.pairs[10], this.pairs[11], this.colors[this.pairs[10]], this.colors[this.pairs[11]], '#fffff4');
+        } else {
+          this.parent.drawHexagon(this.x, this.y, scale, teams[currentTeam].color);
+
+//          this.parent.drawHexagon(this.x, this.y, 0.95 * scale, 'rgba(255,255,255,0.9)');
+//          previewBoard.setWindow(this.parent.world2windowX(2 * GRID_X, 0),this.parent.world2windowY(2 * GRID_Y, 0))
+          previewBoard.canvas.style.width = (this.parent.scale * 2 * GRID_X) + 'px';
+          previewBoard.canvas.style.height = (this.parent.scale * 2 * GRID_Y) + 'px';
+          previewBoard.setWindow();
+          previewBoard.canvas.style.left = (this.parent.world2windowX(this.x - GRID_X, 0) + 1) + 'px';
+          previewBoard.canvas.style.top = (this.parent.world2windowY(this.y - GRID_Y, 0) + 1) + 'px';
+          previewBoard.setFocus(0,0,this.parent.scale * 0.95);
+          holdingTile.rotating = 0.001 // to run render and clear larger preview tile on board resize.
+
+        }
+      }
+    }
+  }
+
+  this.rotating = 0;
+  this.rotate = function(direction)
+  {
+    var change;
+    if (direction > 0)
+    {
+      change = 2;
+    } else {
+      change = 10;
+    }
+
+    var point;
+    for (point in this.pairs) this.pairs[point] = (this.pairs[point] + change) % 12;
+//    this.render();
+    this.rotating -= (direction * Math.PI / 3);
+  }
+}
+
+
+// END CLASSES
+////////////////////////////////////////////////////////////////////////////////
+
+function showMessage(txt, w, h, title, button1, popup)
+{
+  if (!txt)
+  {
+    clearMessage();
+  } else {
+    if (popup) //temporary fix until other js files are updated
+    {
+      var messageBox = document.getElementById('message-box');
+      if (!w) w = +200;
+      if (!h) h = +70;
+      messageBox.style.width = w + 'px';
+      messageBox.style.marginLeft = parseInt(-w / 2) + 'px';     
+      messageBox.style.height = h + 'px';
+      messageBox.style.marginTop = parseInt(-h / 2) + 'px';
+      if(title) txt = '<h2>' + title + '</h2>' + txt;
+      if(button1) txt = '<a class=""return"" href=""javascript:clearMessage();"">X</a>' + txt + '<a class=""button"" href=""javascript:clearMessage();"">' + button1 + '</a>';
+      messageBox.innerHTML = txt;
+      messageBox.style.display = 'block';
+    } else { 
+      showSubtleMessage(txt);
+    }
+  }
+}
+function clearMessage()
+{
+  var messageBox = document.getElementById('message-box');
+  messageBox.innerHTML = '';
+  messageBox.style.display = 'none';
+}
+
+/////////////////////////////////////////////////////////////////////////////////
+
+function browserCheck()
+{
+  var canvasCompatible = false;
+  try
+  {
+    canvasCompatible = !!(document.createElement('canvas').getContext('2d')); // S60
+  } catch(e) {
+    canvasCompatible = !!(document.createElement('canvas').getContext); // IE
+  } 
+  if(canvasCompatible)
+  {
+    return true;
+  } else {
+    var browserList = '';
+    browserList += '<li><a href="http://www.apple.com/safari/" title="Apple Safari" class="safari"><span>Apple Safari</span></a></li>';
+    browserList += '<li><a href="http://www.google.com/chrome/" title="Google Chrome" class="chrome"><span>Google Chrome</span></a></li>';
+    browserList += '<li><a href="http://www.mozilla.com/firefox/" title="Mozilla Firefox" class="firefox"><span>Mozilla Firefox</span></a></li>';
+    browserList += '<li><a href="http://www.opera.com/" title="Opera" class="opera"><span>Opera</span></a></li>';
+
+    showMessage('<p><b>Entanglement</b> uses cutting-edge browser technology, HTML5, which your browser does not seem to support. But you can still play! The most recent versions of all of these browsers support HTML5:</p><ul id="browsers">' + browserList + '</ul><p>You can also play using Internet Explorer, if you <a href="http://www.google.com/chromeframe/eula.html">install the Chrome Frame plug-in</a>.</p>', 400, 300, 'One More Step...', false, true);
+    return false;
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+var thisStep            = 0;
+function startStepping() {stepper();}
+function stepper()
+{
+  var holding = holdingTile;
+
+  if (holding.rotating)
+  {
+    holding.rotating *= 0.75;
+    if (Math.abs(holding.rotating) < 0.01) holding.rotating = 0;
+
+    var ctx = holding.parent.context;
+    ctx.clearRect(0,0,holding.parent.width,holding.parent.height);
+    ctx.save();
+    ctx.translate(holding.parent.width / 2, holding.parent.height / 2);
+    ctx.rotate(holding.rotating);
+    ctx.translate(- holding.parent.width / 2, - holding.parent.height / 2);
+    holding.render();
+    ctx.restore();
+    
+  }
+
+  thisStep++;
+  if (thisStep >= 400000) thisStep = 0; // to prevent overflow
+  setTimeout("stepper();", 30);
+}
+
+//var holding;
+//var spare = false;
+function showSubtleMessage(str)
+{
+  document.getElementById("msg").innerHTML = str;
+}
+function showScores(str)
+{
+  document.getElementById("scores").innerHTML = str;
+}
+function showStopper(str)
+{
+  document.getElementById("form-stop").innerHTML = str;
+  document.getElementById("form-go").style.display = 'none';
+}
+
+function swapTiles()
+{
+  teams[currentTeam].swapTiles();
+  holdingTile.pairs = teams[currentTeam].tiles[0].pairs;
+  holdingTile.rotating = 0.001;
+  if(teams[currentTeam].tiles.length > 1)
+  {
+    queueTile.pairs = teams[currentTeam].tiles[1].pairs;
+    queueTile.render();
+  }
+}
+
+function drawMap(size, startTile)
+{
+  var mapSize = size + 1;
+  var x = startTile.x;
+  var y = startTile.y - mapSize * GRID_Y;
+  for (var z = 0; z < mapSize; z++)
+  {
+    gameBoard.add(new aTile(x, y, 'wall', 'wall', gameBoard));
+    x += GRID_X;
+    y += OFFSET_Y;
+  }
+  for (var z = 0; z < mapSize; z++)
+  {
+    gameBoard.add(new aTile(x, y, 'wall', 'wall', gameBoard));
+    y += GRID_Y;
+  }
+  for (var z = 0; z < mapSize; z++)
+  {
+    gameBoard.add(new aTile(x, y, 'wall', 'wall', gameBoard));
+    x -= GRID_X;
+    y += OFFSET_Y;
+  }
+  for (var z = 0; z < mapSize; z++)
+  {
+    gameBoard.add(new aTile(x, y, 'wall', 'wall', gameBoard));
+    x -= GRID_X;
+    y -= OFFSET_Y;
+  }
+  for (var z = 0; z < mapSize; z++)
+  {
+    gameBoard.add(new aTile(x, y, 'wall', 'wall', gameBoard));
+    y -= GRID_Y;
+  }
+  for (var z = 0; z < mapSize; z++)
+  {
+    gameBoard.add(new aTile(x, y, 'wall', 'wall', gameBoard));
+    x += GRID_X;
+    y -= OFFSET_Y;
+  }
+}
+
+
+function getPointX(point, length)
+{
+  switch(point)
+  {
+    case -1: return 0;
+    case 0: return (length * -0.5);
+    case 1: return (length * 0.5);
+    case 2: return (length * 1.25);
+    case 3: return (length * 1.75);
+    case 4: return (length * 1.75);
+    case 5: return (length * 1.25);
+    case 6: return (length * 0.5);
+    case 7: return (length * -0.5);
+    case 8: return (length * -1.25);
+    case 9: return (length * -1.75);
+    case 10: return (length * -1.75);
+    case 11: return (length * -1.25);
+  }
+  return getBezierX(point % 12, length);
+}
+function getPointY(point, length)
+{
+  switch(point)
+  {
+    case -1: return 0;
+    case 0: return (length * -1);
+    case 1: return (length * -1);
+    case 2: return (length * -0.75);
+    case 3: return (length * -0.25);
+    case 4: return (length * 0.25);
+    case 5: return (length * 0.75);
+    case 6: return (length * 1);
+    case 7: return (length * 1);
+    case 8: return (length * 0.75);
+    case 9: return (length * 0.25);
+    case 10: return (length * -0.25);
+    case 11: return (length * -0.75);
+  }
+  return getBezierY(point % 12, length);
+}
+function getBezierX(point, length)
+{
+  switch(point)
+  {
+    case -1: return 0;
+    case 0: return (length * -0.5);
+    case 1: return (length * 0.5);
+    case 2: return (length * 0.5);
+    case 3: return (length * 1);
+    case 4: return (length * 1);
+    case 5: return (length * 0.5);
+    case 6: return (length * 0.5);
+    case 7: return (length * -0.5);
+    case 8: return (length * -0.5);
+    case 9: return (length * -1);
+    case 10: return (length * -1);
+    case 11: return (length * -0.5);
+  }
+}
+function getBezierY(point, length)
+{
+  switch(point)
+  {
+    case -1: return 0;
+    case 0: return (length * -0.5);
+    case 1: return (length * -0.5);
+    case 2: return (length * -0.5);
+    case 3: return (length * 0);
+    case 4: return (length * 0);
+    case 5: return (length * 0.5);
+    case 6: return (length * 0.5);
+    case 7: return (length * 0.5);
+    case 8: return (length * 0.5);
+    case 9: return (length * 0);
+    case 10: return (length * 0);
+    case 11: return (length * -0.5);
+  }
+}
+
+function loadPage()
+{
+  if (browserCheck())
+  {
+    beginGame();
+  }
+}
+
+     </script>
+    <script type="text/javascript" src="./js/gamesolitaire.js"></script>
+  </head><body class="solitaire" onload="loadPage();" onresize="gameBoard.rescale(); if(numberOfTeams == 1) drawSolitaireScore();">
+    <h1 id="title" style="display:none;background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: transparent; width: 250px; height: 40px; margin-top: 10px; margin-right: 10px; margin-bottom: 10px; margin-left: 10px; background-position: initial initial; background-repeat: initial initial; ">HTML5中文网</h1>
+    <div id="scores" style="display: none; "><div style="color: orange;">3</div></div>
+    <div id="msg" style="bottom: 20px; "><span style="color: orange;">您的记录: <span style="font-size: 1.4em;">5</span></span></div>
+
+    <canvas id="game" width="1440" height="740"></canvas>
+    <canvas id="preview" width="226" height="261" style="width: 226.301px; height: 261px; left: 721px; top: 175.25px; "></canvas>
+    <canvas id="queue" width="200" height="200"></canvas>
+    <div style="position: absolute; z-index: 93; right: 10px; bottom: 5px; font-weight: bold; font-size: 12px; font-family: candara, arial, sans-serif;"><a href="javascript:showMessage(INSTRUCTIONS, 400, 300, false, false, true);" style="font-weight: bold; color: #800;">玩法说明：</a> - <a href="http://www.html5china.com/" style="color: #aaa; text-decoration: none;">HTML5中文网</a></div>
+     <div style="position: absolute; z-index: 93; right: 250px; bottom: 5px; font-weight: bold; font-size: 14px; font-family: candara, arial, sans-serif;">
+    <a href="http://www.html5china.com">由HTML5中文网整理收集，更多精彩请关注 www.HTML5China.com </a>
+    <div id="message-box"></div>
+
+</body></html>
